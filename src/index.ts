@@ -16,8 +16,6 @@ const bot = new Telegraf(process.env.TELEGRAM_TOKEN as string);
 
 const commands = config.commands;
 
-bot.command(commands.info, (ctx) => pipeline(ctx, adminRole, info) as any);
-
 // Listeners
 bot.command(commands.ban, (ctx) => pipeline(ctx, adminRole, ban) as any);
 bot.command(commands.mute, (ctx) => pipeline(ctx, adminRole, mute) as any);
