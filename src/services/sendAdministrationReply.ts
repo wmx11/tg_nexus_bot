@@ -1,4 +1,7 @@
+import config from '../config';
 import getAdministrationMessageByType from './getAdministrationMessageByType';
+
+const messagesMap = new Map();
 
 const sendReplyToUser = (ctx: any) => async (id: string, type: string) => {
     if (!id) {
@@ -29,7 +32,23 @@ const sendReplyToUser = (ctx: any) => async (id: string, type: string) => {
         );
     }
 
-    return ctx.reply(`${username}. ${message}`);
+    const replyMessage = await ctx.reply(`${username}. ${message}`);
+
+    if (replyMessage) {
+        messagesMap.set(replyMessage.message_id, {
+            destory: setTimeout(() => {
+                try {
+                    ctx.deleteMessage(replyMessage.message_id);
+                    messagesMap.delete(replyMessage.message_id);
+                } catch (error) {
+                    messagesMap.delete(replyMessage.message_id);
+                    console.log(error);
+                }
+            }, config.messageDeleteTiemout),
+        });
+    }
+
+    return replyMessage;
 };
 
 const sendAdministrationReply = async (ctx: any, type: string) => {
