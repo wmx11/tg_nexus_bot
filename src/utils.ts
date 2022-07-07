@@ -20,7 +20,7 @@ export const isAdmin = async (ctx: any): Promise<boolean> => {
         return false;
     }
 
-    const hasAdminRole = !!['creator', 'admin'].find(
+    const hasAdminRole = !!['creator', 'admin', 'administrator', 'co-founder', 'founder', 'moderator'].find(
         (role) => role === member.status
     );
 
